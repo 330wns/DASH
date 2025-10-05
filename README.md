@@ -12,7 +12,6 @@ Google Chat Webhook으로 알림을 전송하는 시스템입니다.
 - Google Sheets를 통한 실시간 출입 로그 관리  
 - Google Chat Webhook 알림 전송  
 - gTTS 기반 한국어 음성 출력  
-- Colorama 컬러 로그 출력  
 - threading 기반 비동기 로깅  
 
 ---
