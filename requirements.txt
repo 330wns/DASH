@@ -4,4 +4,5 @@ google-auth-oauthlib==1.1.0
 google-auth-httplib2==0.1.1
 colorama==0.4.6
 requests==2.31.0
-gtts==2.4.0
+gTTS==2.4.0
+pystyle==3.3.0
