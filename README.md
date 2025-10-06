@@ -7,7 +7,8 @@ Google Sheets + Google Chat 자동화 기반 외출입 관리 시스템
 이 프로그램은 **ID카드 리더기를 사용하거나 수동 입력을 하여서**,  
 Google 스프레드시트에 출입 상태를 자동 기록하고  
 Google Chat Webhook으로 알림을 전송하는 시스템입니다.
-
+- Serial NFC/RFID 리더를 사용할시, main_Serial.py를 사용해주세요. 또한, HID리더처럼 사용하실수있게 SerialToHid.py도 넣어놨습니다.
+- Serial NFC READER는 ACR122U-A9을 맥북 환경에서 작동했습니다.
 **주요 기능**
 - Google Sheets를 통한 실시간 출입 로그 관리  
 - Google Chat Webhook 알림 전송  
