@@ -78,7 +78,7 @@ https://docs.google.com/spreadsheets/d/1AbCdEfGhIJkLMNOPqrstuVWxyz1234567890/edi
 
 ## 🧰 설치 방법
 ```bash
-pip install gspread google-auth colorama gtts pystyle requests
+pip install -r requirements.txt
 brew install ffmpeg   # macOS 전용
 ```
 
