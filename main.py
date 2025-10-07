@@ -70,7 +70,7 @@ def txtc(msg,name,id):
 
 def speak(text: str, speed=settings.음성출력_배속):
     if settings.음성출력:
-        tts = gTTS(text=text, lang='ko')
+        tts = gTTS(text=text, lang=settings.음성출력_언어)
         uid=uuid.uuid4()
         tts.save(f"tts_{uid}.mp3")
         dp(f'tts_{uid}.mp3 저장 성공')
