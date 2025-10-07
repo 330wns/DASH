@@ -1,4 +1,5 @@
-#DASH with NFC, BETA
+#DASH with NFC
+"""지원이 종료되었습니다. 출입시간 경고 기능부터 사용이 지원되지 않습니다."""
 
 import gspread
 from google.oauth2.service_account import Credentials
