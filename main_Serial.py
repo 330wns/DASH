@@ -1,4 +1,4 @@
-#DASH with NFC READER(SERIAL), BETA
+#DASH with NFC, BETA
 
 import gspread
 from google.oauth2.service_account import Credentials
@@ -87,7 +87,7 @@ def txtc(msg, name, id):
 
 def speak(text: str, speed=settings.음성출력_배속):
     if settings.음성출력:
-        tts = gTTS(text=text, lang='ko')
+        tts = gTTS(text=text, lang=settings.음성출력_언어)
         uid = uuid.uuid4()
         filename = f"tts_{uid}.mp3"
         tts.save(filename)
@@ -199,6 +199,7 @@ def auto_read_cards():
                 check_id(uid)
             else:
                 print(Fore.YELLOW + "UID 읽기 실패 또는 카드 미인식" + Style.RESET_ALL)
+                speak('카드를 다시 대주세요',1.7)
 
             # 카드 뗄 때까지 대기
             while True:
