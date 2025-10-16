@@ -302,7 +302,7 @@ class DormitoryApp:
             log_frame = ttk.LabelFrame(main_frame, text="출입 기록", padding="10")
             log_frame.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
         else:
-            # 수동 입력 모드 UI (main_ht.py와 동일)
+            # 수동 입력 모드 UI 
             title_label = ttk.Label(main_frame, text=f"{settings.기숙사_이름} 기숙사 출입 관리 (HID/수동)", 
                                    font=('Arial', 16, 'bold'))
             title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
