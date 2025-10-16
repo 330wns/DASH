@@ -1,6 +1,7 @@
 #region 기본설정
 기숙사_이름 = '기숙사 이름을 넣어주세요'
 스프레드시트_키 = '스프레드시트의 키를 입력해주세요'
+JSON파일_경로 = 'service_account.json'
 리더기_사용 = False #PC/SC 리더기 사용시 True
 로딩중_전체표시 = True
 로딩중_기숙사표시 = True
