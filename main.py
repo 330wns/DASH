@@ -16,7 +16,7 @@ import uuid
 import settings
 from colorama import Fore, Style, init
 import importlib
-
+print(Fore.BLUE+'settings.py 로딩 성공')
 # NFC 리더기 관련 import (리더기 사용 시에만)
 if settings.리더기_사용:
     try:
@@ -50,7 +50,7 @@ SCOPES = [
 # Google Sheets 초기화
 try:
     creds = Credentials.from_service_account_file(
-        "service_account.json",
+        settings.JSON파일_경로,
         scopes=SCOPES
     )
     dp('creds 로딩 성공')
@@ -131,13 +131,13 @@ def send_to_gchat(message: str, retry=0):
                 try:
                     print(f"지챗 전송 실패: {response.text}")
                 except:
-                    retry=retry
+                    None
             else:
                 print(Fore.RED+f'[{retry+1}/{settings.지챗_재전송시도횟수}]')
                 try:
                     print(f"지챗 재전송 실패: {response.text}")
                 except:
-                    retry=retry
+                    None
             if settings.지챗_재전송시도 and retry != settings.지챗_재전송시도횟수:
                 time.sleep(settings.지챗_재전송멈춤시간)
                 print("재전송 시도중..")
@@ -147,7 +147,7 @@ def send_to_gchat(message: str, retry=0):
                 try:
                     print(response.text)
                 except:
-                    retry=retry
+                    None
 
 def make_logs():
     while True:
