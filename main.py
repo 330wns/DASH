@@ -1,6 +1,5 @@
 # DASH Combined Version, Tkinter GUI Version, Alpha
 
-from ast import excepthandler
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import gspread
