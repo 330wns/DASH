@@ -1,5 +1,6 @@
-# DASH Combined Version, Tkinter GUI Version, Beta
+# DASH Combined Version, Tkinter GUI Version, Alpha
 
+from ast import excepthandler
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
 import gspread
@@ -14,6 +15,7 @@ from gtts import gTTS
 import uuid
 import settings
 from colorama import Fore, Style, init
+import importlib
 
 # NFC 리더기 관련 import (리더기 사용 시에만)
 if settings.리더기_사용:
@@ -24,7 +26,6 @@ if settings.리더기_사용:
     except ImportError:
         print("NFC 리더기 라이브러리가 설치되지 않았습니다. 수동 입력 모드로 전환합니다.")
         NFC_AVAILABLE = False
-        settings.리더기_사용 = False
 else:
     NFC_AVAILABLE = False
 
@@ -114,23 +115,39 @@ def send_to_gchat(message: str, retry=0):
         payload = {"text": message}
         CHAT_WEBHOOK_URL = CHAT_WEBHOOK_URLS[CURRENT_WEBHOOK_USING_IDX]
         CURRENT_WEBHOOK_USING_IDX = 0 if CURRENT_WEBHOOK_USING_IDX == len(CHAT_WEBHOOK_URLS) - 1 else CURRENT_WEBHOOK_USING_IDX + 1
-
+        fail=False
         try:
             response = requests.post(CHAT_WEBHOOK_URL, json=payload)
-            dp(f'지챗 전송 성공, using webhook no#{CURRENT_WEBHOOK_USING_IDX}')
             if response.status_code != 200:
-                if retry == 0:
-                    print(f"지챗 전송 실패: {response.text}")
-                else:
-                    print(f"[{retry+1}/{settings.지챗_재전송시도횟수}]지챗 재전송 실패: {response.text}")
-                if settings.지챗_재전송시도 and retry != settings.지챗_재전송시도횟수:
-                    time.sleep(settings.지챗_재전송멈춤시간)
-                    print("재전송 시도중..")
-                    send_to_gchat(f'[{retry+1}/{settings.지챗_재전송시도횟수}번째 재전송 시도된 메세지]\n'+message, retry+1)
-                if retry == settings.지챗_재전송시도횟수:
-                    print(f"지챗 전체 횟수 시도 재전송 실패: {response.text}")
+                fail=True
+            elif retry != 0:
+                print(Fore.GREEN+'재전송 성공!!')
+            dp(f'지챗 {'전송' if retry==0 else '재전송'} 성공, using webhook no#{CURRENT_WEBHOOK_USING_IDX}') if response.status_code == 200 else dp(f'지챗 {'전송' if retry==0 else '재전송'} 실패, using webhook no#{CURRENT_WEBHOOK_USING_IDX}')
         except Exception as e:
             print(f"지챗 에러: {e}")
+            fail=True
+        if fail:
+            if retry == 0:
+                try:
+                    print(f"지챗 전송 실패: {response.text}")
+                except:
+                    retry=retry
+            else:
+                print(Fore.RED+f'[{retry+1}/{settings.지챗_재전송시도횟수}]')
+                try:
+                    print(f"지챗 재전송 실패: {response.text}")
+                except:
+                    retry=retry
+            if settings.지챗_재전송시도 and retry != settings.지챗_재전송시도횟수:
+                time.sleep(settings.지챗_재전송멈춤시간)
+                print("재전송 시도중..")
+                send_to_gchat(f'[{retry+1}/{settings.지챗_재전송시도횟수}번째 재전송 시도된 메세지]\n'+message if retry==0 else f'[{retry+1}/{settings.지챗_재전송시도횟수}번째 재전송 시도된 메세지]\n'+'\n'.join(message.split('\n')[1:]), retry+1)
+            if retry == settings.지챗_재전송시도횟수:
+                print(f"지챗 전체 횟수 시도 재전송 실패")
+                try:
+                    print(response.text)
+                except:
+                    retry=retry
 
 def make_logs():
     while True:
@@ -392,7 +409,7 @@ class DormitoryApp:
         if not settings.리더기_사용 and hasattr(self, 'card_id_entry'):
             card_id = self.card_id_entry.get().strip()
             if card_id:
-                self.log_message(f"📱 입력: {card_id}", "info")
+                self.log_message(f"💳 입력: {card_id}", "info")
                 check_id(card_id, self)
                 self.card_id_entry.delete(0, tk.END)
             
@@ -440,6 +457,7 @@ class DormitoryApp:
                         uid = toHexString(data).replace(" ", "")
                         self.log_message(f"🔍 감지된 UID: {uid}", "info")
                         check_id(uid, self)
+                        importlib.reload(settings)
                     else:
                         self.log_message("⚠️ UID 읽기 실패 또는 카드 미인식", "warning")
                         threading.Thread(target=speak, args=('카드를 다시 대주세요', 1.7), daemon=True).start()
@@ -475,7 +493,7 @@ class DormitoryApp:
 # 메인 실행
 # =====================================================
 if __name__ == "__main__":
-    print(Fore.YELLOW + '이 프로그램은 Beta 버전입니다. 버그가 발생할수 있습니다.')
+    print(Fore.YELLOW + '이 프로그램은 Alpha 버전입니다. 버그가 발생할수 있습니다.')
     
     # 리더기 사용 여부에 따른 안내
     if settings.리더기_사용:
