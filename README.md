@@ -9,6 +9,7 @@ Google 스프레드시트에 출입 상태를 자동 기록하고
 Google Chat Webhook으로 알림을 전송하는 시스템입니다.
 - PC/SC 리더기를 사용하실경우, settings.py에서 **리더기_사용** 을 **True**로 바꿔주시면 돱니다.
 - 또한 PCSCToHid.py를 사용하여 HID처럼 사용하실수 있습니다.
+- addPeople.py를 사용하여 쉽게 사람을 등록할수 있습니다.
   
 **주요 기능**
 - Google Sheets를 통한 실시간 외출입 로그 관리  
@@ -17,7 +18,7 @@ Google Chat Webhook으로 알림을 전송하는 시스템입니다.
 
 ---
 
-## 🧩 파일 구조
+## 🧩 필수 파일 구조
 ```
 project/
 ├── main.py                  # 실행 파일
