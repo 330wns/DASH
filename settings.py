@@ -29,6 +29,11 @@ JSON파일_경로 = 'service_account.json'
 터미널출력_없는정보 = '등록되지 않은 정보입니다.'
 #endregion
 
+#region 큰글씨 출력
+큰글씨_메세지_출입 = '%name님 출입'
+큰글씨_메세지_외출 = '%name님 외출'
+#endregion
+
 #region 지챗전송
 지챗전송 = True
 지챗_웹훅_링크 = ['지챗 웹훅 링크들을 입력해주세요'] # 여러개 설정 가능
