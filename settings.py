@@ -13,7 +13,7 @@ JSON파일_경로 = 'service_account.json'
 로깅시트_세로열 = '30000' #기본값 : 30000
 #endregion
 
-"""%time : 현재 시간 (HH:MM:SS) / %date : 현재 날짜 (YYYY-MM-DD) / %name : 태깅한 이름 / %id : 태깅한 카드 번호"""
+"""%time : 현재 시간 (HH:MM:SS) / %date : 현재 날짜 (YYYY-MM-DD) / %name : 태깅한 이름 / %id : 태깅한 카드 UID"""
 #region 음성출력
 음성출력 = True
 음성출력_배속 = 2 # 2배속이 기본
