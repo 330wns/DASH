@@ -39,7 +39,4 @@ JSON파일_경로 = 'service_account.json'
 지챗_재전송멈춤시간 = 1 # 초단위
 지챗_재전송시도횟수 = 1
 #endregion
-try:
-    import base64;exec(base64.b64decode("cHJpbnQoInNldHRpbmdzLnB564qUIOyEpOygleyaqSDtjIzsnbzsnoXri4jri6QhIOyLpO2Wie2VoCDtlYTsmpTqsIAg7JeG7Iq164uI64ukLiIpIGlmIF9fbmFtZV9fID09ICJfX21haW5fXyIgZWxzZSBwcmludChmIlwwMzNbMzRte19fbmFtZV9ffS5weSDroZzrlKnsmYTro4wiKQ=="))
-except:
-    pass
+print('settings.py는 설정용 파일입니다! 실행할 필요가 없습니다.') if __name__=='__main__' else None
