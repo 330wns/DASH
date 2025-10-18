@@ -457,8 +457,6 @@ class DormitoryApp:
                         uid = toHexString(data).replace(" ", "")
                         self.log_message(f"🔍 감지된 UID: {uid}", "info")
                         check_id(uid, self)
-                        importlib.reload(settings)
-                        dp('settings.py 리로드 성공')
                     else:
                         self.log_message("⚠️ UID 읽기 실패 또는 카드 미인식", "warning")
                         threading.Thread(target=speak, args=('카드를 다시 대주세요', 1.7), daemon=True).start()
