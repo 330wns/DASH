@@ -15,7 +15,7 @@ import uuid
 import settings
 from colorama import Fore, Style, init
 import importlib
-print(Fore.BLUE+'settings.py 로딩 성공')
+
 # NFC 리더기 관련 import (리더기 사용 시에만)
 if settings.리더기_사용:
     try:
@@ -58,7 +58,7 @@ try:
     
     spreadsheet = client.open_by_key(settings.스프레드시트_키)
     sheet = spreadsheet.sheet1
-    
+    dp('sheet 로딩 성공')
     # 로그 시트 초기화
     try:
         log_sheet = spreadsheet.worksheet(settings.로깅시트_이름)
@@ -77,20 +77,20 @@ except Exception as e:
     sheet = None
     log_sheet = None
 
-# =====================================================
-# 공통 함수
-# =====================================================
 def txtc(msg, name, id):
+    rmsg=msg
     msg = msg.replace('%time', datetime.now().strftime("%H:%M:%S"))
     msg = msg.replace('%date', datetime.now().strftime("%Y-%m-%d"))
     msg = msg.replace('%name', str(name))
     msg = msg.replace('%id', id)
+    dp(f'TXTC : {rmsg} -> {msg}')
     return msg
 
 def speak(text: str, speed=settings.음성출력_배속):
     if settings.음성출력:
         try:
             tts = gTTS(text=text, lang=settings.음성출력_언어)
+            dp('gTTS request 성공')
             uid = uuid.uuid4()
             filename = f"tts_{uid}.mp3"
             tts.save(filename)
@@ -155,6 +155,7 @@ def make_logs():
             try:
                 log_sheet.append_row(LOG_QUEUE[0], table_range="A1")
                 LOG_QUEUE.remove(LOG_QUEUE[0])
+                dp('로그 기록 성공')
             except Exception as e:
                 print(f"로그 기록 실패: {e}")
 
@@ -179,14 +180,14 @@ def check_id(card_id: str, gui_app):
                     msg = txtc(settings.지챗_외출메세지, name, card_id)
                     # 먼저 메시지 표시
                     gui_app.log_message(f"👋 {txtc(settings.터미널출력_메세지_외출, name, card_id)}", "exit")
-                    gui_app.update_status_display(name, "외출")
+                    gui_app.update_status_display(name, "외출",card_id)
                     
                 else:
                     new_status = "출입"
                     msg = txtc(settings.지챗_출입메세지, name, card_id)
                     # 먼저 메시지 표시
                     gui_app.log_message(f"✅ {txtc(settings.터미널출력_메세지_출입, name, card_id)}", "enter")
-                    gui_app.update_status_display(name, "출입")
+                    gui_app.update_status_display(name, "출입",card_id)
 
                 # 메시지 표시 후 잠시 대기 (사용자가 메시지를 볼 수 있도록)
                 time.sleep(0.5)
@@ -301,7 +302,7 @@ class DormitoryApp:
             log_frame = ttk.LabelFrame(main_frame, text="출입 기록", padding="10")
             log_frame.grid(row=3, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
         else:
-            # 수동 입력 모드 UI 
+            # 수동 입력 모드 UI
             title_label = ttk.Label(main_frame, text=f"{settings.기숙사_이름} 기숙사 출입 관리 (HID/수동)", 
                                    font=('Arial', 16, 'bold'))
             title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
@@ -374,12 +375,12 @@ class DormitoryApp:
         # 다시 비활성화
         self.log_text.config(state='disabled')
             
-    def update_status_display(self, name, status):
+    def update_status_display(self, name, status, uid):
         """큰 글씨로 출입 상태 표시"""
         if status == "출입":
-            self.current_status_label.config(text=f"{name}님 출입", foreground="green")
+            self.current_status_label.config(text=txtc(settings.큰글씨_메세지_출입,name,uid), foreground="green")
         else:
-            self.current_status_label.config(text=f"{name}님 외출", foreground="red")
+            self.current_status_label.config(text=txtc(settings.큰글씨_메세지_외출,name,uid), foreground="red")
     
     def task_started(self):
         """작업 시작 시 호출"""
@@ -457,6 +458,7 @@ class DormitoryApp:
                         self.log_message(f"🔍 감지된 UID: {uid}", "info")
                         check_id(uid, self)
                         importlib.reload(settings)
+                        dp('settings.py 리로드 성공')
                     else:
                         self.log_message("⚠️ UID 읽기 실패 또는 카드 미인식", "warning")
                         threading.Thread(target=speak, args=('카드를 다시 대주세요', 1.7), daemon=True).start()
@@ -493,8 +495,6 @@ class DormitoryApp:
 # =====================================================
 if __name__ == "__main__":
     print(Fore.YELLOW + '이 프로그램은 Alpha 버전입니다. 버그가 발생할수 있습니다.')
-    
-    # 리더기 사용 여부에 따른 안내
     if settings.리더기_사용:
         if NFC_AVAILABLE:
             print("NFC 리더기 모드로 실행됩니다.")
