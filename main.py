@@ -77,12 +77,14 @@ except Exception as e:
     sheet = None
     log_sheet = None
 
-def txtc(msg, name, id):
+def txtc(msg, name, id, new_status = None):
     rmsg=msg
     msg = msg.replace('%time', datetime.now().strftime("%H:%M:%S"))
     msg = msg.replace('%date', datetime.now().strftime("%Y-%m-%d"))
     msg = msg.replace('%name', str(name))
     msg = msg.replace('%id', id)
+    if new_status:
+        msg = msg.replace('%status',new_status)
     dp(f'TXTC : {rmsg} -> {msg}')
     return msg
 
@@ -209,7 +211,9 @@ def check_id(card_id: str, gui_app):
                 # 스프레드시트 업데이트 작업
                 def sheet_task():
                     sheet.update_cell(row_idx, 3, new_status)
-                    sheet.update_cell(row_idx, 4, f"{now} - {new_status}")
+                    # sheet.update_cell(row_idx, 4, f"{now} - {new_status}")
+                    sheet.update_cell(row_idx, 4, txtc(settings.최신로그_글자,name, card_id, new_status))
+
                     dp(f'시트 업데이트 성공, row#{row_idx}, status#{new_status}')
                     gui_app.task_completed()  # 스프레드시트 작업 완료
                 threading.Thread(target=sheet_task, daemon=True).start()
