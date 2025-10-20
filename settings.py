@@ -11,6 +11,7 @@ JSON파일_경로 = 'service_account.json'
 로깅시트_이름 = '로깅시트의 이름을 적어주세요'
 로깅시트_가로열 = '26' #기본값 : 26
 로깅시트_세로열 = '30000' #기본값 : 30000
+최신로그_글자 = '%date %time - %status' #최신로그_글자에서만 %status 사용가능 (현재 상태)
 #endregion
 
 """%time : 현재 시간 (HH:MM:SS) / %date : 현재 날짜 (YYYY-MM-DD) / %name : 태깅한 이름 / %id : 태깅한 카드 UID"""
