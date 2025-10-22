@@ -45,4 +45,4 @@ JSON파일_경로 = 'service_account.json'
 지챗_재전송멈춤시간 = 1 # 초단위
 지챗_재전송시도횟수 = 1
 #endregion
-print('settings.py는 설정용 파일입니다! 실행할 필요가 없습니다.') if __name__=='__main__' else None
+print('settings.py는 설정용 파일입니다! 실행할 필요가 없습니다.') if __name__=='__main__' else None; exec("지챗_웹훅_링크=[지챗_웹훅_링크]") if type(지챗_웹훅_링크)==str else None
